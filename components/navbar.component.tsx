@@ -7,7 +7,9 @@ type NavBarProps = {
 export default function NavBar(props: NavBarProps) {
     return (
         <>
-        <p className='text-right text-xs'>with 💗 from <a href="https://linkedin.com/in/ibnjunaid">@ibnjunaid</a></p>
+        <p className='text-right text-xs'>with 💗 from <a href="https://linkedin.com/in/ibnjunaid">@ibnjunaid</a> and 
+            <a href="https://www.linkedin.com/in/sucheta-mahata/"> @sucheta</a>
+        </p>
         <div className="navbar bg-base-100 ">
             <div className="flex-1">
                 <Image src="/GDSC.png" width={400} height={50}
