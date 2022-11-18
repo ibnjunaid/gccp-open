@@ -8,9 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const institutions = await getInstitutions();
     if(institutions !== null){
         if( !institutions.includes(String(instituteId)) ){
-            res.send(`institute Id (${instituteId}) is available.`)
+            res.json(`institute Id (${instituteId}) is available.`)
         } else {
-            res.send(`institute Id (${instituteId}) taken.`)
+            res.json(`institute Id (${instituteId}) taken.`)
         }
     } else {
         logger.error('Error in check-institute')
