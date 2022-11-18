@@ -1,12 +1,12 @@
 import { GoogleAuth } from 'google-auth-library';
 import { google, sheets_v4 } from 'googleapis';
 import logger from './logger';
-import {join} from 'node:path' 
+import { join } from 'node:path'
 
-const keyFilePath = join(__dirname, '../../../../private/sheet-key.json')
+const keyFilePath = join(__dirname, '../../../../../private/sheet-key.json')
 
 const auth = new google.auth.GoogleAuth({
-    keyFile : keyFilePath,
+    keyFile: keyFilePath,
     scopes: "https://www.googleapis.com/auth/spreadsheets",
 });
 
@@ -17,25 +17,30 @@ const auth = new google.auth.GoogleAuth({
  * @param tableTitle
  * @returns sheets_v4.Schema$ValueRange
  */
-export async function getDataFromSheet( spreadsheetId: string, tableTitle: string ): Promise< any >{
-    //Auth client Object
-    const authClientObject = await auth.getClient();
+export async function getDataFromSheet(spreadsheetId: string, tableTitle: string): Promise<any> {
+    try {
+        //Auth client Object
+        const authClientObject = await auth.getClient();
 
-    //Google sheet instance
-    const googleSheetInstance = google.sheets({ version: "v4", auth: authClientObject });
+        //Google sheet instance
+        const googleSheetInstance = google.sheets({ version: "v4", auth: authClientObject });
 
-    //Get metadata about sheet
-    const sheetInfo = await googleSheetInstance.spreadsheets.get({
-        auth,
-        spreadsheetId
-    });
+        //Get metadata about sheet
+        const sheetInfo = await googleSheetInstance.spreadsheets.get({
+            auth,
+            spreadsheetId
+        });
 
-    const sheetData = await readDataFromSheetTitles( googleSheetInstance, auth, spreadsheetId, `${tableTitle}!1:1000`);
+        const sheetData = await readDataFromSheetTitles(googleSheetInstance, auth, spreadsheetId, `${tableTitle}!1:1000`);
 
-    return sheetValueToObject(sheetData);
+        return sheetValueToObject(sheetData);
+    } catch (error: any) {
+        logger.error(error.message)
+        throw error;
+    }
 }
 
-export async function getSheetTitles( spreadsheetId: string ) {
+export async function getSheetTitles(spreadsheetId: string) {
     try {
         const authClientObject = await auth.getClient();
 
@@ -56,9 +61,9 @@ export async function getSheetTitles( spreadsheetId: string ) {
 }
 
 function extractSheetTitles(sheets: sheets_v4.Schema$Sheet[]): Array<string> {
-    const sheetTitles : Array<string> = [];
-    for(let sheet of sheets){
-        if(sheet.properties?.title){
+    const sheetTitles: Array<string> = [];
+    for (let sheet of sheets) {
+        if (sheet.properties?.title) {
             sheetTitles.push(sheet.properties.title);
         } else {
             throw new Error("Every Sheet should have a title")
@@ -67,7 +72,7 @@ function extractSheetTitles(sheets: sheets_v4.Schema$Sheet[]): Array<string> {
     return sheetTitles;
 }
 
-async function readDataFromSheetTitles( googleSheetInstance: sheets_v4.Sheets, auth: GoogleAuth , spreadsheetId: string, range?: string): Promise<sheets_v4.Schema$ValueRange>{
+async function readDataFromSheetTitles(googleSheetInstance: sheets_v4.Sheets, auth: GoogleAuth, spreadsheetId: string, range?: string): Promise<sheets_v4.Schema$ValueRange> {
     const readData = await googleSheetInstance.spreadsheets.values.get({
         auth, //auth object
         spreadsheetId, // spreadsheet id,
@@ -76,13 +81,13 @@ async function readDataFromSheetTitles( googleSheetInstance: sheets_v4.Sheets, a
     return readData.data;
 }
 
-function sheetValueToObject( sheetValue: sheets_v4.Schema$ValueRange) {
+function sheetValueToObject(sheetValue: sheets_v4.Schema$ValueRange) {
     let sheetValueObjects = new Array<Object>();
-    if(sheetValue.values){
+    if (sheetValue.values) {
         let index = 0;
-        for(let i=1; i< sheetValue.values.length; i++){
-            const sValue: {[key:string]: string} = {};
-            for(let j = 0; j< sheetValue.values[i].length; j++){
+        for (let i = 1; i < sheetValue.values.length; i++) {
+            const sValue: { [key: string]: string } = {};
+            for (let j = 0; j < sheetValue.values[i].length; j++) {
                 const keyName: string = sheetValue.values[0][index++];
                 sValue[keyName] = sheetValue.values[i][j];
             }
@@ -91,4 +96,31 @@ function sheetValueToObject( sheetValue: sheets_v4.Schema$ValueRange) {
         }
     }
     return sheetValueObjects;
+}
+
+export async function addDataTosheet(spreadsheetId: string, sheetTitle: string, data: any) {
+    try {
+        //Auth client Object
+        const authClientObject = await auth.getClient();
+
+        //Google sheet instance
+        const googleSheetInstance = google.sheets({ version: "v4", auth: authClientObject });
+
+        //Get metadata about sheet
+        const sheetAppendInfo = await googleSheetInstance.spreadsheets.values.append({
+            spreadsheetId: spreadsheetId,
+            range: sheetTitle,
+            valueInputOption: 'USER_ENTERED',
+            requestBody: {
+                range: sheetTitle,
+                majorDimension: 'ROWS',
+                values: data
+            },
+            includeValuesInResponse: true
+        });
+        return sheetAppendInfo;
+    } catch(error){
+        logger.error(error);
+        throw error;
+    }
 }
