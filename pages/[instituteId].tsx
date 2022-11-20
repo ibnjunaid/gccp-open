@@ -6,6 +6,7 @@ import load_img from '../utils/loading.gif'
 import Image from 'next/image'
 
 type participantsData = {
+    instituteDetails: any;
     headers: string[],
     data: Array<string[]>
 }
@@ -22,7 +23,7 @@ export default function Institute() {
     const [participantsData, setParticipantsData] = useState<participantsData | null>(null);
 
     async function getInstituteData(instituteId: string) {
-        const res = await fetch(`http://192.168.1.4:3000/api/data/${instituteId}`);
+        const res = await fetch(`http://localhost:3000/api/data/${instituteId}`);
 
         //retrieving response code for false route
         const responseCode = res.status;
@@ -37,6 +38,7 @@ export default function Institute() {
     useEffect(() => {
         if (router.isReady) {
             getInstituteData(String(router.query.instituteId)).then((data) => {
+                console.log(data)
                 setData(data.data);
                 setParticipantsData(data)
             })
@@ -66,7 +68,7 @@ export default function Institute() {
     if (participantsData && data) {
         return (
             <>
-                <NavBar filterFunc={handleFilter} />
+                <NavBar filterFunc={handleFilter} instituteName={participantsData.instituteDetails.InstituteName}/>
                 <Table headers={participantsData.headers} data={data} />
             </>
         )
