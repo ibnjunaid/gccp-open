@@ -4,44 +4,32 @@ import NavBar from '../components/navbar.component';
 import Table from '../components/table.components';
 import load_img from '../utils/loading.gif'
 import Image from 'next/image'
+import { filterSensitiveData, getInstituteDetails, getInstitutions } from '../utils/utils';
+import { getDataFromSheet, getSheetTitles } from '../utils/sheets';
+import logger from '../utils/logger';
 
 type participantsData = {
+    instituteDetails: any;
     headers: string[],
     data: Array<string[]>
 }
 
-export default function Institute() {
+type InstituteProps = {
+    is404: boolean
+    instituteDetails: any;
+    headers: string[],
+    data: Array<string[]>
+}
 
-    //checking invalid page/route hit.
-    const [pageNotFound, setPageNotFound] = React.useState<boolean>(false)
+export default function Institute(props: InstituteProps) {
+    console.log(props)
 
-    console.log('first')
     const router = useRouter()
 
-    const [data, setData] = useState<Array<string[]> | null>(null);
-    const [participantsData, setParticipantsData] = useState<participantsData | null>(null);
+    const [pageNotFound, setPageNotFound] = React.useState<boolean>(props.is404)
 
-    async function getInstituteData(instituteId: string) {
-        const res = await fetch(`http://192.168.1.4:3000/api/data/${instituteId}`);
-
-        //retrieving response code for false route
-        const responseCode = res.status;
-        if (responseCode === 404) {
-            setPageNotFound(true)
-        }
-        return await res.json()
-    }
-
-
-
-    useEffect(() => {
-        if (router.isReady) {
-            getInstituteData(String(router.query.instituteId)).then((data) => {
-                setData(data.data);
-                setParticipantsData(data)
-            })
-        }
-    }, [router.isReady])
+    const [data, setData] = useState<Array<string[]>>(props.data);
+    const [participantsData, setParticipantsData] = useState<participantsData>(props);
 
 
     function handleFilter(event: React.ChangeEvent<HTMLInputElement>) {
@@ -61,13 +49,12 @@ export default function Institute() {
         }
     }
 
-    console.log(participantsData, data)
-
-    if (participantsData && data) {
+    if (participantsData.headers.length > 0) {
         return (
             <>
-                <NavBar filterFunc={handleFilter} />
+                <NavBar filterFunc={handleFilter} instituteName={participantsData.instituteDetails.InstituteName} />
                 <Table headers={participantsData.headers} data={data} />
+                <p>Static Generation on {(new Date()).toISOString()}</p>
             </>
         )
     }
@@ -77,7 +64,7 @@ export default function Institute() {
                 pageNotFound ? (<><main className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
                     <h1 className="text-9xl font-extrabold text-white tracking-widest">404</h1>
                     <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
-                        Page Not Found
+                        Institution Not Found
                     </div>
                     <button className="mt-5">
                         <a
@@ -99,5 +86,50 @@ export default function Institute() {
                 </div>)
             }
         </>
+    }
+}
+
+export async function getStaticPaths() {
+    const res = await getInstitutions();
+    if (res !== null) {
+        return {
+            paths: res.map((institution: string) => {
+                return {
+                    params: {
+                        instituteId: institution
+                    }
+                }
+            }),
+            fallback: 'blocking',
+        }
+    }
+    else {
+        return {
+            paths: [],
+            fallback: 'blocking',
+        }
+    }
+}
+
+// `getStaticPaths` requires using `getStaticProps`
+export async function getStaticProps(context: any) {
+    const instituteId = context.params.instituteId;
+    const instituteDetails = await getInstituteDetails(String(instituteId));
+    if (instituteDetails === null) {
+        logger.error("Institute Details not found");
+        return { props: { is404: true, instituteDetails: {}, headers: [], data: [[]] } }
+    }
+    const sheetTitles = await getSheetTitles(instituteDetails.sheetId);
+    const latestTableTitle = sheetTitles[sheetTitles.length - 1];
+    const data = await getDataFromSheet(
+        instituteDetails.sheetId,
+        latestTableTitle
+    )
+    const filteredData = filterSensitiveData(data);
+    return {
+        props: {
+            ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
+            is404: false, revalidate: 1800
+        }
     }
 }

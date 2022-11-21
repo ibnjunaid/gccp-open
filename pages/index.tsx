@@ -26,7 +26,7 @@ export default function HomePage() {
             </h2>
             <button
               className="btn btn-primary"
-              onClick={() => router.push("/signup")}
+              onClick={() => router.push("/institution/signup")}
             >
               Register Here
             </button>

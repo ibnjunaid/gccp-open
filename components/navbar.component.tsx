@@ -1,7 +1,9 @@
 import Image from 'next/image'
+import Logo from './logo.component'
 
 type NavBarProps = {
-    filterFunc: any
+    filterFunc: any,
+    instituteName: string
 }
 
 export default function NavBar(props: NavBarProps) {
@@ -12,9 +14,7 @@ export default function NavBar(props: NavBarProps) {
             </p>
             <div className="navbar bg-base-100 ">
                 <div className="flex-1">
-                    <Image src="/GDSC.png" width={400} height={50}
-                        alt="Shoes" className="rounded-xl bg-green-200 p-2"
-                    />
+                    <Logo instituteName={props.instituteName} width={400} height={100}></Logo>
                 </div>
                 <div className="flex-1">
                     <h1>GCCP Leader Board</h1>

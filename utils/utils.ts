@@ -9,7 +9,10 @@ type instituteDetails = {
 
 export function filterSensitiveData(rawData: any[]) {
     const headers = getHeaderMappings()
-    const data = rawData.map((entry) => {
+    const sortedData = rawData.sort(
+        (a, b) => b['# of Courses Completed'] - a['# of Courses Completed']
+    )
+    const data = sortedData.map((entry) => {
         return Object.keys(headers).map(header_key => entry[header_key])
     })
     return {
