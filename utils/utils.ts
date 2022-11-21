@@ -55,7 +55,7 @@ export async function getInstitutions(): Promise<string[] | null> {
         if (Institutions.length >= 1) {
             return Institutions;
         } else {
-            return null;
+            return [];
         }
     } else {
         return null;
