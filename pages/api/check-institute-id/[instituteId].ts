@@ -6,11 +6,7 @@ import InMemoryCache from '../../../utils/cache';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Object| null>) {
     const instituteId = req.query.instituteId;
-    let institutions = InMemoryCache.get('institutions');
-    if(institutions == null){
-        institutions = await getInstitutions();
-        InMemoryCache.set('institutions', institutions)
-    }
+    const institutions = await getInstitutions();
     if(institutions !== null){
         if( !institutions.includes(String(instituteId)) ){
             res.json({'message': `institute Id (${instituteId}) is available.`, available: true})

@@ -45,7 +45,7 @@ export default function Signup() {
   }, [instituteId])
 
   async function registrationHandler() {
-    const response = await fetch(`http://gccp.vercel.app/api/register`, {
+    const response = await fetch(`https://gccp.vercel.app/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
