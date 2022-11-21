@@ -25,7 +25,7 @@ export default function Table(props: TableProp) {
             {
               props.data.map((entry, i) => {
                 return <tr key={i}>
-                  <th>{i}</th>
+                  <th>{i+1}</th>
                   {
                     entry.map((val, j) => <th key={j}>{val}</th>)
                   }

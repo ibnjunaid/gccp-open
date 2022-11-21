@@ -6,6 +6,8 @@ import {
   registerInstitute,
   validateSheet,
 } from "../../utils/utils";
+import InMemoryCache from '../../utils/cache';
+
 
 type Data = Object;
 
@@ -16,7 +18,11 @@ export default async function handler(
   const { instituteId, sheetId, instituteName} = req.body;
   try {
     if (req.body.instituteId && req.body.sheetId && req.body.instituteName) {
-      const institutions = await getInstitutions();
+      let institutions = InMemoryCache.get('institutions');
+      if(institutions == null){
+          institutions = await getInstitutions();
+          InMemoryCache.set('institutions', institutions)
+      }
       if (institutions !== null) {
         if (institutions.includes(String(instituteId))) {
           res.status(400).json({message: `institute Id (${instituteId}) taken.`});
@@ -24,6 +30,7 @@ export default async function handler(
           await validateSheet(sheetId);
           const resp = registerInstitute([instituteId, sheetId, instituteName]);
           if (resp !== null) {
+            institutions.push(instituteId)
             res.status(201).json({message: "created"});
           } else {
             logger.error("Error in check-institute");

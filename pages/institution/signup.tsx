@@ -1,4 +1,4 @@
-import addViewer from '../utils/newss.png'
+import addViewer from '../../utils/newss.png'
 import { useEffect, useState } from 'react'
 import React from 'react';
 import Image from 'next/image';
