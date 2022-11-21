@@ -18,7 +18,7 @@ export default function Signup() {
 
   async function checkInstitute() {
     if (instituteId !== '') {
-      const res = await fetch(`http://localhost:3000/api/check-institute-id/${instituteId}`)
+      const res = await fetch(`https://gccp.vercel.app/api/check-institute-id/${instituteId}`)
       if (res.status === 200) {
         const data = await res.json()
         setCheckInstitute(data)

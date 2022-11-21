@@ -22,7 +22,6 @@ type InstituteProps = {
 }
 
 export default function Institute(props: InstituteProps) {
-    console.log(props)
 
     const router = useRouter()
 
