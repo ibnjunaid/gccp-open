@@ -8,7 +8,6 @@ import {
 } from "../../utils/utils";
 import InMemoryCache from '../../utils/cache';
 
-
 type Data = Object;
 
 export default async function handler(
