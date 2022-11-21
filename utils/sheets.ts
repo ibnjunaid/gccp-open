@@ -3,7 +3,7 @@ import { google, sheets_v4 } from 'googleapis';
 import logger from './logger';
 import { join } from 'node:path'
 
-const keyFilePath = join(__dirname, '../../../../../private/sheet-key.json')
+const keyFilePath = join(__dirname, '../../../../private/sheet-key.json')
 
 const auth = new google.auth.GoogleAuth({
     keyFile: keyFilePath,
