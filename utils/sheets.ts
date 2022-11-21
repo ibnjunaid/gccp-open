@@ -1,13 +1,21 @@
 import { GoogleAuth } from 'google-auth-library';
 import { google, sheets_v4 } from 'googleapis';
 import logger from './logger';
-import { join } from 'node:path'
+import { exit } from 'node:process';
 
-const keyFilePath = join(__dirname, '../../../../private/sheet-key.json')
+let credentials;
+
+let cred = process.env.CRED
+if (cred === undefined){
+    logger.error("Cannot find credentials in environment")
+    exit(-1)
+}
+credentials = JSON.parse(cred);
+credentials.private_key = credentials.private_key.replace(/\\n/gm, '\n')
 
 const auth = new google.auth.GoogleAuth({
-    keyFile: keyFilePath,
     scopes: "https://www.googleapis.com/auth/spreadsheets",
+    credentials: credentials
 });
 
 
