@@ -3,14 +3,17 @@ import { useEffect, useState } from 'react'
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { toast } from "react-toastify";
+
 export default function Signup() {
 
   const router = useRouter()
 
   const [instituteId, setinstituteId] = useState<string>('')
-  const [checkInstituteRes, setCheckInstitute] = useState<any>({message: '', available: false})
+  const [checkInstituteRes, setCheckInstitute] = useState<any>({ message: '', available: false })
   const [sheetId, setsheetId] = useState<string>('')
   const [instituteName, setInstituteName] = useState<string>('')
+  const [progress, setProgress] = useState<boolean>(false);
 
   async function setinstituteIdHandler(e: any) {
     setinstituteId(e.target.value)
@@ -18,13 +21,13 @@ export default function Signup() {
 
   async function checkInstitute() {
     if (instituteId !== '') {
-      const res = await fetch(`https://gccp.vercel.app/api/check-institute-id/${instituteId}`)
+      const res = await fetch(`http://192.168.1.4:3000/api/check-institute-id/${instituteId}`)
       if (res.status === 200) {
         const data = await res.json()
         setCheckInstitute(data)
       }
     } else {
-      setCheckInstitute({message: '', available: false})
+      setCheckInstitute({ message: '', available: false })
     }
   }
 
@@ -33,8 +36,8 @@ export default function Signup() {
   }
 
   async function setInstituteHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    if(e.target.value === ''){
-      setCheckInstitute({message: '', available: false})
+    if (e.target.value === '') {
+      setCheckInstitute({ message: '', available: false })
     }
     setInstituteName(e.target.value)
   }
@@ -45,7 +48,8 @@ export default function Signup() {
   }, [instituteId])
 
   async function registrationHandler() {
-    const response = await fetch(`https://gccp.vercel.app/api/register`, {
+    setProgress(true)
+    const response = await fetch(`http://192.168.1.4:3000/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -54,12 +58,15 @@ export default function Signup() {
     })
 
     const data = await response.json()
+    console.log("promise Data ", data)
 
-    if(response.status === 400){
-      alert(data.message)
+    if (response.status === 400) {
+      toast.error(data.message)
+      setProgress(false)
     }
 
     else if (data.message === "created") {
+      toast.success(data.message + " " + "successfully please wait,  Redirecting...")
       router.push(`/${instituteId}`)
     }
   }
@@ -151,8 +158,9 @@ export default function Signup() {
               from-green-4500 to-pink-500 hover:bg-gradient-to-bl focus:ring-4
               focus:outline-none focus:ring-pink-800 dark:focus:ring-pink-800
               font-medium rounded-lg text-sm px-12 py-3 text-center mr-2 mb-2 outline-1'
+              disabled={progress}
             >
-              Save
+              {progress ? 'Please wait...' : 'Save'}
             </button>
           </div>
         </div>
