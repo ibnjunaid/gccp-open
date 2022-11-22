@@ -53,7 +53,7 @@ export default function Institute(props: InstituteProps) {
             <>
                 <NavBar filterFunc={handleFilter} instituteName={participantsData.instituteDetails.InstituteName} />
                 <Table headers={participantsData.headers} data={data} />
-                <p>Static Generation on {(new Date()).toISOString()}</p>
+                <p className='font-thin'>Last generated on {Date().toString()}</p>
             </>
         )
     }
@@ -128,7 +128,8 @@ export async function getStaticProps(context: any) {
     return {
         props: {
             ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
-            is404: false, revalidate: 1800
-        }
+            is404: false
+        },
+        revalidate: 7200
     }
 }
