@@ -17,17 +17,13 @@ export default async function handler(
   const { instituteId, sheetId, instituteName} = req.body;
   try {
     if (req.body.instituteId && req.body.sheetId && req.body.instituteName) {
-      let institutions = InMemoryCache.get('institutions');
-      if(institutions == null){
-          institutions = await getInstitutions();
-          InMemoryCache.set('institutions', institutions)
-      }
+      let institutions = await getInstitutions();
       if (institutions !== null) {
         if (institutions.includes(String(instituteId))) {
           res.status(400).json({message: `institute Id (${instituteId}) taken.`});
         } else {
           await validateSheet(sheetId);
-          const resp = registerInstitute([instituteId, sheetId, instituteName]);
+          const resp = await registerInstitute([instituteId, sheetId, instituteName]);
           if (resp !== null) {
             institutions.push(instituteId)
             res.status(201).json({message: "created"});
