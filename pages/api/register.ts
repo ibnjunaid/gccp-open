@@ -23,7 +23,7 @@ export default async function handler(
           res.status(400).json({message: `institute Id (${instituteId}) taken.`});
         } else {
           await validateSheet(sheetId);
-          const resp = registerInstitute([instituteId, sheetId, instituteName]);
+          const resp = await registerInstitute([instituteId, sheetId, instituteName]);
           if (resp !== null) {
             institutions.push(instituteId)
             res.status(201).json({message: "created"});

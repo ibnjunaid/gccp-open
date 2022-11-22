@@ -132,7 +132,7 @@ export async function getStaticProps(context: any) {
     return {
         props: {
             ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
-            is404: false, revalidate: 1800
+            is404: false, revalidate: 7200
         }
     }
 }
