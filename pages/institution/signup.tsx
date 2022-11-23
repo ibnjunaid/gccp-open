@@ -49,7 +49,7 @@ export default function Signup() {
 
   async function registrationHandler() {
     setProgress(true)
-    const response = await fetch(`http://192.168.1.4:3000/api/register`, {
+    const response = await fetch(`https://gccp.vercel.app/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -58,15 +58,18 @@ export default function Signup() {
     })
 
     const data = await response.json()
-    console.log("promise Data ", data)
-
+    // console.log("promise Data ", data)
+    if (response.status === 404) {
+      toast.error('Please check your sheet Id ❎')
+      setProgress(false)
+    }
     if (response.status === 400) {
-      toast.error(data.message)
+      toast.error('Please add sheets@halogen-data-340911.iam.gserviceaccount.com as viewer on the sheet 🙇')
       setProgress(false)
     }
 
     else if (data.message === "created") {
-      toast.success(data.message + " " + "successfully please wait,  Redirecting...")
+      toast.success(data.message + " " + "successfully regsitered : ✅ ,  Redirecting... 🚀🚀")
       router.push(`/${instituteId}`)
     }
   }
@@ -154,17 +157,13 @@ export default function Signup() {
           </div>
           <div className="flex justify-center  tracking-widest	 text-2xl">
             <button onClick={registrationHandler}
-              className='tracking-widest text-primary bg-gradient-to-br
-              from-green-4500 to-pink-500 hover:bg-gradient-to-bl focus:ring-4
-              focus:outline-none focus:ring-pink-800 dark:focus:ring-pink-800
-              font-medium rounded-lg text-sm px-12 py-3 text-center mr-2 mb-2 outline-1'
+              className=' w-2/12 tracking-widest text-white bg-gradient-to-br  from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'
               disabled={progress}
             >
               {progress ? 'Please wait...' : 'Save'}
             </button>
           </div>
         </div>
-
 
         <div className="flex justify-center xl:mt-10">
           <label className="block text-lg  text-black-900 ">
