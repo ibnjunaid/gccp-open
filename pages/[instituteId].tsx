@@ -47,7 +47,7 @@ export default function Institute(props: InstituteProps) {
                 <>
                     <NavBar filterFunc={handleFilter} instituteName={participantsData.instituteDetails.InstituteName} />
                     <Table headers={participantsData.headers} data={data} />
-                    <p>Static Generation on {(new Date()).toISOString()}</p>
+                    <p>Last updated on {Date().toString()}</p>
                 </>
             )
         }
