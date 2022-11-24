@@ -77,110 +77,107 @@ export default function Signup() {
 
 
   return (
-    <>
-      <div className="p-2  bg-gradient-to-r
-            from-indigo-200 via-red-200 to-indigo-200 max-w-full ">
-        <div className="flex justify-center ">
-          <div className="col-span-8 sm:col-span-4 ">
-            <label className="block text-3xl  text-black-900 mb-3 ">
-              Google Sheet ID
+    <div className="max-w-full text-center items-center bg-gradient-to-r
+            from-indigo-200 via-red-200 to-indigo-200 p-2"> 
+      <div className="w-full xl:flex justify-center ">
+        <div className="w-full">
+          <label className=" text-3xl  text-black-900 mb-3 ">
+            Google Sheet ID
+          </label>
+        </div>
+      </div>
+      <div className="xl:flex justify-center">
+        <label className=" text-sm  text-black-900">
+          Paste the google sheet id as shown
+        </label>
+      </div>
+      <div className="xl:flex justify-center ">
+        <h3 className='p-1 text-xl'>
+          https://docs.google.com/spreadsheets/d/
+          <span className='bg-red-300  font-extrabold text-fuchsia-900 '>
+            1l3PDAGoJhss7PFkfWxPTdbJVhTLlSAau7af0zsbTCqI8
+          </span>/edit#gid=0
+        </h3>
+      </div>
+
+      {/* institute, sheet id and path  */}
+      <div className="  w-8/12 m-auto mt-5 p-1 rounded-xl bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 ">
+
+        <div className="xl:flex  justify-around	text-center	items-center	 xl:mt-10  ">
+          {/* for institute Name */}
+          <div className="col-span-6 sm:col-span-4">
+            <label className=" text-2xl  text-black-700 p-0 ">
+              Enter your institute Name
             </label>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <label className="block text-sm  text-black-900">
-            Paste the google sheet id as shown
-          </label>
-        </div>
-        <div className="flex justify-center ">
-          <h3 className='p-1 text-xl'>
-            https://docs.google.com/spreadsheets/d/
-            <span className='bg-red-300  font-extrabold text-fuchsia-900 '>
-              1l3PDAGoJhss7PFkfWxPTdbJVhTLlSAau7af0zsbTCqI8
-            </span>/edit#gid=0
-          </h3>
-        </div>
-
-        {/* institute, sheet id and path  */}
-        <div className="block  w-8/12 m-auto mt-5 p-1 rounded-xl bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 ">
-
-          <div className="flex  justify-around	text-center	items-center	 xl:mt-10  ">
-            {/* for institute Name */}
-            <div className="col-span-6 sm:col-span-4">
-              <label className="block text-2xl  text-black-700 p-0 ">
-                Enter your institute Name
-              </label>
-            </div>
-            <div className="flex justify-center mb-0">
-              <input
-                type="text"
-                className="mt-0 block w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 mb-3 input input-bordered"
-                placeholder='Enter your institute Name'
-                onChange={setInstituteHandler}
-              />
-            </div>
+          <div className="xl:flex justify-center mb-0">
+            <input
+              type="text"
+              className="mt-0  w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 mb-3 input input-bordered"
+              placeholder='Enter your institute Name'
+              onChange={setInstituteHandler}
+            />
           </div>
-          {/* for Spreadsheet  */}
-          <div className="flex  justify-around	text-center	items-center	 xl:mt-10  ">
-            <div className="col-span-6 sm:col-span-4">
-              <label className="block text-2xl  text-black-700 p-0 ">
-                Paste Spreadsheet ID
-              </label>
-            </div>
-            <div className="flex justify-center mb-0">
-              <input
-                type="text"
-                className="mt-0 block w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 mb-3 input input-bordered"
-                placeholder='paste sheet id'
-                onChange={setSheetIdHandler}
-              />
-            </div>
+        </div>
+        {/* for Spreadsheet  */}
+        <div className="xl:flex  justify-around	text-center	items-center	 xl:mt-10  ">
+          <div className="col-span-6 sm:col-span-4">
+            <label className=" text-2xl  text-black-700 p-0 ">
+              Paste Spreadsheet ID
+            </label>
           </div>
+          <div className="xl:flex justify-center mb-0">
+            <input
+              type="text"
+              className="mt-0  w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 mb-3 input input-bordered"
+              placeholder='paste sheet id'
+              onChange={setSheetIdHandler}
+            />
+          </div>
+        </div>
 
-          {/* for path  */}
-          <div className="flex  justify-around	text-center	items-center	 xl:mt-10 ">
-            <div className="col-span-6 sm:col-span-4">
-              <label className="block text-2xl  text-black-700 p-2 ">
-                Choose your path
-              </label>
-            </div>
-            <div className="flex justify-center mb-4">
-              <input
-                type="text"
-                className={`mt-0 block w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 input input-bordered
+        {/* for path  */}
+        <div className="xl:flex  justify-around	text-center	items-center	 xl:mt-10 ">
+          <div className="col-span-6 sm:col-span-4">
+            <label className=" text-2xl  text-black-700 p-2 ">
+              Choose your path
+            </label>
+          </div>
+          <div className="xl:flex justify-center mb-4">
+            <input
+              type="text"
+              className={`mt-0  w-96  border-1 shadow-lg focus:border-black-500 focus:ring-black-500 sm:text-xl p-2 bg-slate-100 input input-bordered
                   ${!checkInstituteRes.available ? 'border-2 border-rose-600' : 'border-2 border-green-500'}`}
-                placeholder=" Example : snu "
-                onChange={setinstituteIdHandler}
-                title={`Your site instituteId will be https://gccp.vercel.app/${instituteId}`}
-              />
-            </div>
-          </div>
-          <div className="flex justify-center  tracking-widest	 text-2xl">
-            <button onClick={registrationHandler}
-              className=' w-2/12 tracking-widest text-white bg-gradient-to-br  from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'
-              disabled={progress}
-            >
-              {progress ? 'Please wait...' : 'Save'}
-            </button>
+              placeholder=" Example : snu "
+              onChange={setinstituteIdHandler}
+              title={`Your site instituteId will be https://gccp.vercel.app/${instituteId}`}
+            />
           </div>
         </div>
-
-        <div className="flex justify-center xl:mt-10">
-          <label className="block text-lg  text-black-900 ">
-            Give Google Sheet 'Viewer' permission to :
-          </label>
+        <div className="xl:flex justify-center  tracking-widest	 text-2xl">
+          <button onClick={registrationHandler}
+            className=' w-2/12 tracking-widest text-white bg-gradient-to-br  from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'
+            disabled={progress}
+          >
+            {progress ? 'Please wait...' : 'Save'}
+          </button>
         </div>
-        <div className="flex justify-center">
-          <label className="block text-sm  text-black-900 p-2">
-            sheets@halogen-data-340911.iam.gserviceaccount.com
-          </label>
-        </div>
-        <div className="flex justify-center mb-1">
-          <Image src={addViewer} width="400" alt=''></Image>
-        </div>
-
       </div>
-    </>
+
+      <div className="xl:flex justify-center xl:mt-10">
+        <label className=" text-lg  text-black-900 ">
+          Give Google Sheet 'Viewer' permission to :
+        </label>
+      </div>
+      <div className="xl:flex justify-center">
+        <label className=" text-sm  text-black-900 p-2">
+          sheets@halogen-data-340911.iam.gserviceaccount.com
+        </label>
+      </div>
+      <div className="flex justify-center mb-1">
+        <Image src={addViewer} width="400" alt=''></Image>
+      </div>
+    </div>
   )
 }
 
