@@ -9,12 +9,24 @@ type instituteDetails = {
 
 export function filterSensitiveData(rawData: any[]) {
   const headers = getHeaderMappings();
-  const sortedData = rawData.sort(
-    (a, b) =>
-      b["# of Courses Completed"] +
-      b["# of Skill Badges Completed"] -
-      (a["# of Courses Completed"] + a["# of Skill Badges Completed"])
-  );
+
+  const sortedData = rawData.sort((a, b) => {
+    const min =
+      parseInt(a["# of Courses Completed"]) +
+      parseInt(a["# of Skill Badges Completed"]);
+    const max =
+      parseInt(b["# of Courses Completed"]) +
+      parseInt(b["# of Skill Badges Completed"]);
+
+    if (min < max) {
+      return 1;
+    } else if (min == max) {
+      return 0;
+    } else {
+      return -1;
+    }
+  });
+
   const data = sortedData.map((entry) => {
     return Object.keys(headers).map((header_key) => entry[header_key]);
   });
