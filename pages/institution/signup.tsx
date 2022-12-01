@@ -21,7 +21,7 @@ export default function Signup() {
 
   async function checkInstitute() {
     if (instituteId !== '') {
-      const res = await fetch(`https://gccp.vercel.app/api/check-institute-id/${instituteId}`)
+      const res = await fetch(`http://localhost:3000/api/check-institute-id/${instituteId}`)
       if (res.status === 200) {
         const data = await res.json()
         setCheckInstitute(data)
@@ -49,7 +49,7 @@ export default function Signup() {
 
   async function registrationHandler() {
     setProgress(true)
-    const response = await fetch(`https://gccp.vercel.app/api/register`, {
+    const response = await fetch(`http://localhost:3000/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
