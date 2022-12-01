@@ -6,7 +6,7 @@ type LogoProps = {
 
 export default function Logo(props: LogoProps) {
     return (
-        <svg width={props.width} height={props.height} viewBox={`0 0 ${props.width} ${props.height}`}fill="none" xmlns="http://www.w3.org/2000/svg"
+        <svg width={props.width} height={props.height} viewBox={`0 0 ${props.width} ${props.height}`} fill="none" xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink">
             <style>
                 {
@@ -16,7 +16,7 @@ export default function Logo(props: LogoProps) {
                     }`
                 }
             </style>
-            <rect width={props.width - 0.66} height={props.height-0.58} fill="url(#pattern0)" />
+            <rect width={props.width - 0.66} height={props.height - 0.58} fill="url(#pattern0)" />
             <defs>
                 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
                     <use xlinkHref="#image0_2169_8" transform="scale(0.000834725 0.00347222)" />

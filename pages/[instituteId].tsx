@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import NavBar from '../components/navbar.component';
 import Table from '../components/table.components';
 import load_img from '../utils/loading.gif'
