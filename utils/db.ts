@@ -1,9 +1,10 @@
 export function getHeaderMappings(): Object{
     return {
         'Student Name': 'Name',
-        'Enrolment Status': 'Status',
+        'Pathway Completion Status': 'Completed',
         '# of Courses Completed': 'Course Completed',
-        '# of Skill Badges Completed': 'Skill Badges Completed'
+        '# of Skill Badges Completed': 'Skill Badges',
+        'Enrolment Status': 'Status',
     }
 }
 
