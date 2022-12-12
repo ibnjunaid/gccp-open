@@ -19,6 +19,7 @@ type InstituteProps = {
     instituteDetails: any;
     headers: string[],
     data: Array<string[]>
+    refreshedOn: Date
 }
 
 export default function Institute(props: InstituteProps) {
@@ -95,7 +96,7 @@ export default function Institute(props: InstituteProps) {
             <>
                 <NavBar filterFunc={handleFilter} instituteName={participantsData.instituteDetails.InstituteName} />
                 <Table headers={participantsData.headers} data={data} />
-                <p className='font-thin'>Last generated on {Date().toString()}</p>
+                <p className='font-thin'>Last generated on {props.refreshedOn.toString()}</p>
             </>
         )
     }
@@ -131,24 +132,9 @@ export default function Institute(props: InstituteProps) {
 }
 
 export async function getStaticPaths() {
-    const res = await getInstitutions();
-    if (res !== null) {
-        return {
-            paths: res.map((institution: string) => {
-                return {
-                    params: {
-                        instituteId: institution
-                    }
-                }
-            }),
-            fallback: 'blocking',
-        }
-    }
-    else {
-        return {
-            paths: [],
-            fallback: 'blocking',
-        }
+    return {
+        paths: [],
+        fallback: 'blocking',
     }
 }
 
@@ -170,7 +156,8 @@ export async function getStaticProps(context: any) {
     return {
         props: {
             ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
-            is404: false
+            is404: false,
+            refreshedOn: new Date()
         },
         revalidate: 7200
     }

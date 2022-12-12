@@ -36,7 +36,7 @@ export default function Table(props: TableProp) {
                             entry.map((val, j) => {
                               return (
                                 <th key={j} className={`sm:text-xs md:text-xl  lg:text-xl text-sm `}> {
-                                  val === 'Yes' ? '✅' : (val === 'No' ? '⏲️' : val)
+                                  val === 'Yes' ? '✅' : (val === 'No' ? '🐌' : val)
                                 }</th>)
                             }
                             )}
