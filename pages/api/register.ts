@@ -32,6 +32,7 @@ export default async function handler(
           ]);
           if (resp !== null) {
             institutions.push(instituteId);
+            registerDataSync(req.body);
             res.status(201).json({ message: "created" });
           } else {
             logger.error("Error in check-institute");
@@ -51,4 +52,22 @@ export default async function handler(
     logger.error(`Error occured while registering institute`);
     res.status(error.code).json({ message: error.message });
   }
+}
+
+type instituteDetails = {
+  instituteId: string;
+  sheetId: string;
+  instituteName: string
+}
+
+async function registerDataSync(params: instituteDetails) {
+  fetch('https://eu-gb.functions.appdomain.cloud/api/v1/web/Oibm_dev/default/scheduler', {
+    method: 'POST',
+    body: JSON.stringify(
+      {
+        ...params,
+        token: process.env.TOKEN
+      }
+    )
+  })
 }
