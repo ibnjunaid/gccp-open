@@ -32,7 +32,8 @@ export default async function handler(
           ]);
           if (resp !== null) {
             institutions.push(instituteId);
-            registerDataSync(req.body);
+            const activationId = await registerDataSync(req.body);
+            logger.info(`New schedule created for ${instituteId}. ActivationId: ${activationId}`)
             res.status(201).json({ message: "created" });
           } else {
             logger.error("Error in check-institute");
@@ -60,14 +61,18 @@ type instituteDetails = {
   instituteName: string
 }
 
+
 async function registerDataSync(params: instituteDetails) {
-  fetch('https://eu-gb.functions.appdomain.cloud/api/v1/web/Oibm_dev/default/scheduler', {
+  const headers = new Headers();
+  headers.append('Authorization', process.env.ACTION_AUTH_TOKEN!)
+  return fetch('https://eu-gb.functions.cloud.ibm.com/api/v1/namespaces/Oibm_dev/actions/scheduler', {
     method: 'POST',
     body: JSON.stringify(
       {
         ...params,
         token: process.env.TOKEN
       }
-    )
+    ),
+    headers: headers
   })
 }
