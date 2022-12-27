@@ -167,7 +167,7 @@ export default function Signup() {
 
         <div className="flex justify-center xl:mt-10">
           <label className="block text-lg  text-black-900 ">
-            Give Google Sheet 'Viewer' permission to :
+            Give Google Sheet 'Editor' permission to :
           </label>
         </div>
         <div className="flex justify-center">

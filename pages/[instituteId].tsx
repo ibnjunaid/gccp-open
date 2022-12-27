@@ -157,7 +157,7 @@ export async function getStaticProps(context: any) {
         props: {
             ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
             is404: false,
-            refreshedOn: new Date()
+            refreshedOn: Date().toString()
         }
     }
 }

@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import logger from "../../utils/logger";
 import {
@@ -6,7 +5,6 @@ import {
   registerInstitute,
   validateSheet,
 } from "../../utils/utils";
-import InMemoryCache from "../../utils/cache";
 
 type Data = Object;
 
@@ -32,7 +30,7 @@ export default async function handler(
           ]);
           if (resp !== null) {
             institutions.push(instituteId);
-            const activationId = await registerDataSync(req.body);
+            const { activationId } = await registerDataSync(req.body);
             logger.info(`New schedule created for ${instituteId}. ActivationId: ${activationId}`)
             res.status(201).json({ message: "created" });
           } else {
@@ -65,7 +63,8 @@ type instituteDetails = {
 async function registerDataSync(params: instituteDetails) {
   const headers = new Headers();
   headers.append('Authorization', process.env.ACTION_AUTH_TOKEN!)
-  return fetch('https://eu-gb.functions.cloud.ibm.com/api/v1/namespaces/Oibm_dev/actions/scheduler', {
+  headers.append('content-type', 'application/json')
+  const res = await fetch('https://eu-gb.functions.cloud.ibm.com/api/v1/namespaces/Oibm_dev/actions/scheduler', {
     method: 'POST',
     body: JSON.stringify(
       {
@@ -74,5 +73,7 @@ async function registerDataSync(params: instituteDetails) {
       }
     ),
     headers: headers
-  })
+  });
+
+  return await res.json()
 }
