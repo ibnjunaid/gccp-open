@@ -30,12 +30,14 @@ export default function Table(props: TableProp) {
                     props.data.map((entry, i) => {
                       return <>
                         <tr key={i} className={'border-solid border-2  border-indigo-200 hover:bg-sky-400 p-2 m-4 cursor-pointer '
-                          + `${(entry[2] === '8' && entry[3] === '4') ? 'bg-green-700' : ''}`} >
+                          + `${(entry[1] === 'Yes') ? 'bg-green-700' : ''}`} >
                           <th >{emogies[i + 1] || i + 1} </th>
                           {
                             entry.map((val, j) => {
                               return (
-                                <th key={j} className={`sm:text-xs md:text-xl  lg:text-xl text-sm `}> {val}</th>)
+                                <th key={j} className={`sm:text-xs md:text-xl  lg:text-xl text-sm `}> {
+                                  val === 'Yes' ? '✅' : (val === 'No' ? '🐌' : val)
+                                }</th>)
                             }
                             )}
                         </tr></>
