@@ -158,7 +158,6 @@ export async function getStaticProps(context: any) {
             ...filteredData, instituteDetails: { ...instituteDetails, sheetId: null },
             is404: false,
             refreshedOn: new Date()
-        },
-        revalidate: 7200
+        }
     }
 }
