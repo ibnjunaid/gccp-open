@@ -10,7 +10,7 @@ export default async function handler(
     }
 
     try {
-        res.revalidate(`/${req.body.path}`);
+        res.revalidate(`${req.body.path}`);
         return res.json({ revalidated: true });
     } catch (err) {
         return res.status(500).send('Error revalidating');
