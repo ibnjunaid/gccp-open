@@ -39,7 +39,6 @@ export function filterSensitiveData(rawData: any[]) {
 export async function getInstituteDetails(
   instituteId: string
 ): Promise<instituteDetails | null> {
-  logger.info(`Getting institute details for ${instituteId}`);
   const sheetId = getMasterSheetId();
   const sheetTitles = await getSheetTitles(sheetId);
   const latestTableTitle = sheetTitles.at(0);
